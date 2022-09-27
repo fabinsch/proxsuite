@@ -1,10 +1,11 @@
 name: Release on GitHub & PyPI
 
 on:
-  pull_request:
-  release:
-    types:
-      - published
+  # pull_request:
+  # release:
+  #   types:
+  #     - published
+  push:
 
 jobs:
   build-wheel:
@@ -57,18 +58,25 @@ jobs:
         shell: bash -l {0}
         run: |
           pip wheel . -w dist
+          cd dist
+          ls
 
       - name: Keep only proxsuite in dist
         shell: bash -l {0}
         run: |
-          rm dist/cmeel*.whl
-          rm dist/tomli*.whl
+          # rm dist/cmeel*.whl
+          # rm dist/tomli*.whl
+          # rm dist/importlib_metadata*.whl
+          # rm dist/typing_extensions*.whl
+          # rm dist/zipp*.whl
+          mkdir -p dist_proxsuite
+          mv dist/proxsuite*.whl dist_proxsuite
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: dist
+          path: dist_proxsuite
 
   release:
     needs: "build-wheel"
@@ -79,6 +87,11 @@ jobs:
         with:
           python-version: "3.10"
       - uses: actions/download-artifact@v3
+
+      - name: Keep only proxsuite in dist
+        shell: bash -l {0}
+        run: |
+          ls dist
 
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
