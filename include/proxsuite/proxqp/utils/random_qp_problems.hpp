@@ -11,6 +11,7 @@
 #include <proxsuite/proxqp/dense/model.hpp>
 #include <proxsuite/proxqp/sparse/model.hpp>
 #include <map>
+#include <proxsuite/proxqp/utils/int128.hpp>
 
 namespace proxsuite {
 namespace proxqp {
@@ -65,7 +66,13 @@ namespace rand {
 
 using proxqp::u32;
 using proxqp::u64;
-using u128 = __uint128_t;
+
+// #if _MSC_VER
+// using u128 = uint128;
+// #else
+// using u128 = __uint128_t;
+// #endif
+using u128 = uint128;
 
 constexpr u128 lehmer64_constant(0xda942042e4dd58b5);
 inline auto
