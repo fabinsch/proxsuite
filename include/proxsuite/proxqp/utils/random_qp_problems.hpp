@@ -11,8 +11,6 @@
 #include <proxsuite/proxqp/dense/model.hpp>
 #include <proxsuite/proxqp/sparse/model.hpp>
 #include <map>
-// #include <proxsuite/proxqp/utils/int128.h>
-// #include ".int128.hpp"
 
 namespace proxsuite {
 namespace proxqp {
@@ -68,10 +66,10 @@ namespace rand {
 using proxqp::u32;
 using proxqp::u64;
 
-// #if _MSC_VER
-// #include <random>
-// std::random_device rd;
-// std::mt19937 gen(rd());
+#if _MSC_VER
+#include <random>
+std::random_device rd;
+std::mt19937 gen(rd());
 using u128 = std::uint32_t;
 inline auto
 uniform_rand() -> double
@@ -91,39 +89,39 @@ set_seed(u64 seed)
 {
 }
 
-// #else
-// using u128 = __uint128_t;
+#else
+using u128 = __uint128_t;
 
-// constexpr u128 lehmer64_constant(0xda942042e4dd58b5);
-// inline auto
-// lehmer_global() -> u128&
-// {
-//   static u128 g_lehmer64_state = lehmer64_constant * lehmer64_constant;
-//   return g_lehmer64_state;
-// }
+constexpr u128 lehmer64_constant(0xda942042e4dd58b5);
+inline auto
+lehmer_global() -> u128&
+{
+  static u128 g_lehmer64_state = lehmer64_constant * lehmer64_constant;
+  return g_lehmer64_state;
+}
 
-// inline auto
-// lehmer64() -> u64
-// { // [0, 2^64)
-//   lehmer_global() *= lehmer64_constant;
-//   return u64(lehmer_global() >> u128(64U));
-// }
+inline auto
+lehmer64() -> u64
+{ // [0, 2^64)
+  lehmer_global() *= lehmer64_constant;
+  return u64(lehmer_global() >> u128(64U));
+}
 
-// inline void
-// set_seed(u64 seed)
-// {
-//   lehmer_global() = u128(seed) + 1;
-//   lehmer64();
-//   lehmer64();
-// }
+inline void
+set_seed(u64 seed)
+{
+  lehmer_global() = u128(seed) + 1;
+  lehmer64();
+  lehmer64();
+}
 
-// inline auto
-// uniform_rand() -> double
-// { // [0, 2^53]
-//   u64 a = lehmer64() / (1U << 11U);
-//   return double(a) / double(u64(1) << 53U);
-// }
-// #endif
+inline auto
+uniform_rand() -> double
+{ // [0, 2^53]
+  u64 a = lehmer64() / (1U << 11U);
+  return double(a) / double(u64(1) << 53U);
+}
+#endif
 inline auto
 normal_rand() -> double
 {
