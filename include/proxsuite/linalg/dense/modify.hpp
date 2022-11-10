@@ -197,10 +197,11 @@ ldlt_insert_rows_and_cols_impl(
 
   if (l10.cols() > 0) {
     l10 = util::trans(a01);
+    PROXSUITE_EIGEN_MALLOC_ALLOWED();
     util::trans(ld00) //
       .template triangularView<Eigen::UnitUpper>()
       .template solveInPlace<Eigen::OnTheRight>(l10);
-
+    PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
     l10 = l10 * d0.inverse();
   }
 
@@ -224,20 +225,23 @@ ldlt_insert_rows_and_cols_impl(
 
     ld11.template triangularView<Eigen::Lower>() =
       a11.template triangularView<Eigen::Lower>();
-
+    // PROXSUITE_EIGEN_MALLOC_ALLOWED();
     if (l10.cols() > 0) {
       d0xl10T = d0 * util::trans(l10);
       ld11.template triangularView<Eigen::Lower>() -= l10 * d0xl10T;
     }
+    // PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
 
     l21 = a21;
     util::noalias_mul_add(l21, l20, d0xl10T, T(-1));
   }
 
   proxsuite::linalg::dense::factorize(ld11, stack);
+  PROXSUITE_EIGEN_MALLOC_ALLOWED();
   util::trans(ld11) //
     .template triangularView<Eigen::UnitUpper>()
     .template solveInPlace<Eigen::OnTheRight>(l21);
+  PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
 
   auto d1 = util::diagonal(ld11).asDiagonal();
   l21 = l21 * d1.inverse();

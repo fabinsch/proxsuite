@@ -250,11 +250,11 @@ factorize_recursive_impl(Mat mat,
     auto d0 = util::diagonal(l00);
 
     isize work_stride = _detail::adjusted_stride<T>(rem);
-
+    PROXSUITE_EIGEN_MALLOC_ALLOWED();
     util::trans(l00)
       .template triangularView<Eigen::UnitUpper>()
       .template solveInPlace<Eigen::OnTheRight>(l10);
-
+    PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
     {
       auto _work = stack.make_new_for_overwrite( //
         proxsuite::linalg::veg::Tag<T>{},
@@ -271,8 +271,9 @@ factorize_recursive_impl(Mat mat,
       };
       work = l10;
       l10 = l10 * d0.asDiagonal().inverse();
-
+      PROXSUITE_EIGEN_MALLOC_ALLOWED();
       l11.template triangularView<Eigen::Lower>() -= l10 * util::trans(work);
+      PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
     }
 
     _detail::factorize_recursive_impl(l11, stack);

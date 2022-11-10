@@ -814,7 +814,9 @@ noalias_mul_add_impl(Dst dst, Lhs lhs, Rhs rhs, T factor)
   } else
 #endif
   {
+    PROXSUITE_EIGEN_MALLOC_ALLOWED();
     dst.noalias().operator+=(factor * LAZY_PRODUCT(lhs, rhs));
+    PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
   }
 
 #undef LAZY_PRODUCT
