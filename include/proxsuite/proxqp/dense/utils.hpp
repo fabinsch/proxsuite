@@ -407,14 +407,21 @@ global_dual_residual(Results<T>& qpresults,
   duality_gap += by;
   ruiz.scale_dual_in_place_eq(VectorViewMut<T>{ from_eigen, qpresults.y });
   ruiz.unscale_dual_in_place_in(VectorViewMut<T>{ from_eigen, qpresults.z });
-  T zu = positive_part(qpresults.z).dot(qpmodel.u);
+  ruiz.unscale_dual_in_place_in(
+    VectorViewMut<T>{ from_eigen, qpwork.l_scaled });
+  ruiz.unscale_dual_in_place_in(
+    VectorViewMut<T>{ from_eigen, qpwork.u_scaled });
+  T zu = positive_part(qpresults.z).dot(qpwork.u_scaled);
   rhs_duality_gap = std::max(rhs_duality_gap, std::abs(zu));
   duality_gap += zu;
-  T zl = negative_part(qpresults.z).dot(qpmodel.l);
+  T zl = negative_part(qpresults.z).dot(qpwork.l_scaled);
   rhs_duality_gap = std::max(rhs_duality_gap, std::abs(zl));
   duality_gap += zl;
   ruiz.scale_dual_in_place_in(VectorViewMut<T>{ from_eigen, qpresults.z });
+  ruiz.scale_dual_in_place_in(VectorViewMut<T>{ from_eigen, qpwork.l_scaled });
+  ruiz.scale_dual_in_place_in(VectorViewMut<T>{ from_eigen, qpwork.u_scaled });
   duality_gap /= sqrt_max_dim; // in order to get an a-dimensional duality gap
+  rhs_duality_gap /= sqrt_max_dim;
 }
 
 } // namespace dense
