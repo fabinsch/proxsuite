@@ -78,7 +78,10 @@ ldl_solve(VectorViewMut<T> sol,
       sol_e[i] = work_[isize(zx(perm_inv[i]))];
     }
   } else {
+    PROXSUITE_EIGEN_MALLOC_ALLOWED();
     work_ = iterative_solver.solve(rhs_e);
+    PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED(); // when inputting to function
+
     sol_e = work_;
   }
 }
@@ -339,6 +342,8 @@ qp_solve(Results<T>& results,
          Workspace<T, I>& work,
          P& precond)
 {
+  PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
+
   if (settings.compute_timings) {
     work.timer.stop();
     work.timer.start();
@@ -1416,6 +1421,7 @@ qp_solve(Results<T>& results,
   assert(!std::isnan(results.info.duality_gap));
 
   work.set_dirty();
+  PROXSUITE_EIGEN_MALLOC_ALLOWED();
 }
 } // namespace sparse
 } // namespace proxqp

@@ -688,9 +688,10 @@ struct Workspace
 
     proxsuite::linalg::sparse::MatMut<T, I> CT_scaled =
       detail::middle_cols_mut(kkt_top_n_rows, n + n_eq, n_in, data.C_nnz);
-
+    PROXSUITE_EIGEN_MALLOC_ALLOWED();
     g_scaled = data.g;
     b_scaled = data.b;
+
     u_scaled =
       (data.u.array() <= T(1.E20))
         .select(data.u,
@@ -701,6 +702,7 @@ struct Workspace
         .select(data.l,
                 Eigen::Matrix<T, Eigen::Dynamic, 1>::Zero(data.n_in).array() -
                   T(1.E20));
+    PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
 
     QpViewMut<T, I> qp_scaled = {
       H_scaled,

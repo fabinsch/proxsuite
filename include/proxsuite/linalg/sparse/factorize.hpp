@@ -1008,7 +1008,10 @@ factorize_symbolic_non_zeros(I* nnz_per_col,
 
     case Ordering::amd: {
       auto amd_perm = stack.make_new_for_overwrite(tag, isize(n));
+      PROXSUITE_EIGEN_MALLOC_ALLOWED();
       sparse::amd(amd_perm.ptr_mut(), a, stack);
+      PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
+
       perm = amd_perm.ptr();
     }
       HEDLEY_FALL_THROUGH;
