@@ -718,11 +718,9 @@ unscaled_primal_dual_residual(
     { proxqp::from_eigen, primal_residual_in_scaled_up });
   primal_feasibility_in_rhs_0 = infty_norm(primal_residual_in_scaled_up);
 
-  PROXSUITE_EIGEN_MALLOC_ALLOWED();
-  auto b = data.b;
-  auto l = data.l;
-  auto u = data.u;
-  PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
+  const VecRef<T> b = data.b;
+  const VecRef<T> l = data.l;
+  const VecRef<T> u = data.u;
 
   primal_residual_in_scaled_lo =
     helpers::positive_part(primal_residual_in_scaled_up - u) +
