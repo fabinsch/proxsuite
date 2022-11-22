@@ -63,8 +63,11 @@ struct Model
 
     const T infinite_bound_value = helpers::infinite_bound<T>::value();
 
+    g.resize(dim);
     g.setZero();
+    b.resize(dim);
     b.setZero();
+    u.resize(dim);
     u.setZero();
     u.fill(+infinite_bound_value); // in case it appears u is nullopt (i.e., the
                                    // problem is only lower bounded)
