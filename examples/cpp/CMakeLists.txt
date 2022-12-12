@@ -15,6 +15,14 @@ endfunction()
 
 file(GLOB_RECURSE ${PROJECT_NAME}_CPP_EXAMPLES *.cpp)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND MSVC)
+  foreach(example ${${PROJECT_NAME}_CPP_EXAMPLES})
+    if(${example} MATCHES "update_dense_qp.cpp" OR ${example} MATCHES "solve_without_api.cpp")
+      list(REMOVE_ITEM ${PROJECT_NAME}_CPP_EXAMPLES ${example})
+    endif()
+  endforeach()
+endif()
+
 foreach(EXAMPLE ${${PROJECT_NAME}_CPP_EXAMPLES})
   add_proxsuite_cpp_example(${EXAMPLE})
 endforeach(EXAMPLE ${${PROJECT_NAME}_CPP_EXAMPLES})
