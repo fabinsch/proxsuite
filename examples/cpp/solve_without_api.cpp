@@ -11,14 +11,13 @@ using Vec = dense::Vec<T>;
 int
 main()
 {
-  ::proxsuite::proxqp::utils::rand::set_seed(1);
-
   isize n = 10;
   isize n_eq(n / 4);
   isize n_in(n / 4);
   T p = 0.35;            // level of sparsity
   T conditioning = 10.0; // conditioning level for H
-  auto H = utils::rand::sparse_positive_definite_rand(n, conditioning, p);  // upper triangular matrix
+  auto H = utils::rand::sparse_positive_definite_rand(
+    n, conditioning, p); // upper triangular matrix
   Mat H_dense = Mat(H);
   H_dense.template triangularView<Eigen::Lower>() = H_dense.transpose();
   Vec g = utils::rand::vector_rand<T>(n);
