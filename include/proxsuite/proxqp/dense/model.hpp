@@ -143,6 +143,30 @@ struct Model
     VectorMsg l_msg;
     proxsuite::proxqp::dense::WriteVector<T>(l, &l_msg);
   }
+
+  void deserialize()
+  {
+    MatrixMsg H_msg;
+    proxsuite::proxqp::dense::ReadMatrix(H_msg, &H);
+
+    MatrixMsg A_msg;
+    proxsuite::proxqp::dense::ReadMatrix(A_msg, &A);
+
+    MatrixMsg C_msg;
+    proxsuite::proxqp::dense::ReadMatrix(C_msg, &C);
+
+    VectorMsg g_msg;
+    proxsuite::proxqp::dense::ReadVector(g_msg, &g);
+
+    VectorMsg b_msg;
+    proxsuite::proxqp::dense::ReadVector(b_msg, &b);
+
+    VectorMsg u_msg;
+    proxsuite::proxqp::dense::ReadVector(u_msg, &u);
+
+    VectorMsg l_msg;
+    proxsuite::proxqp::dense::ReadVector(l_msg, &l);
+  }
 };
 } // namespace dense
 } // namespace proxqp

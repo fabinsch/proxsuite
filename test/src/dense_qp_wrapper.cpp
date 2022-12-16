@@ -6824,6 +6824,7 @@ DOCTEST_TEST_CASE("ProxQP::dense: test serialization")
           qp_random.u);
 
   qp.model.serialize();
+  qp.model.deserialize();
 
-  // TODO: add deserialize to test
+  // TODO: add test
 }

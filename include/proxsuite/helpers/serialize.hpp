@@ -12,8 +12,9 @@ namespace proxqp {
 namespace dense {
 ///
 
+template<typename T>
 inline void
-ReadMatrix(const MatrixMsg& msg, Eigen::MatrixXd* mat)
+ReadMatrix(const MatrixMsg& msg, Mat<T>* mat)
 {
   mat->resize(msg.rows(), msg.data_size() / msg.rows());
   for (int ii = 0; ii < msg.data_size(); ii++) {
@@ -21,8 +22,9 @@ ReadMatrix(const MatrixMsg& msg, Eigen::MatrixXd* mat)
   }
 }
 
+template<typename T>
 inline void
-ReadVector(const VectorMsg& msg, Eigen::VectorXd* vec)
+ReadVector(const VectorMsg& msg, Vec<T>* vec)
 {
   vec->resize(msg.data_size());
   for (int ii = 0; ii < msg.data_size(); ii++) {
