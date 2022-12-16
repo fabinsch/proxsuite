@@ -5,8 +5,12 @@
 
 #include <Eigen/Eigen>
 #include <serial.pb.h>
+#include <proxsuite/fwd.hpp>
 
 namespace proxsuite {
+namespace proxqp {
+namespace dense {
+///
 
 inline void
 ReadMatrix(const MatrixMsg& msg, Eigen::MatrixXd* mat)
@@ -26,8 +30,9 @@ ReadVector(const VectorMsg& msg, Eigen::VectorXd* vec)
   }
 }
 
+template<typename T>
 inline void
-WriteMatrix(const Eigen::MatrixXd& mat, MatrixMsg* msg)
+WriteMatrix(const Mat<T> mat, MatrixMsg* msg)
 {
   msg->set_rows(mat.rows());
   msg->mutable_data()->Reserve(mat.rows() * mat.cols());
@@ -36,8 +41,9 @@ WriteMatrix(const Eigen::MatrixXd& mat, MatrixMsg* msg)
   }
 }
 
+template<typename T>
 inline void
-WriteVector(const Eigen::VectorXd& mat, VectorMsg* msg)
+WriteVector(const Vec<T> mat, VectorMsg* msg)
 {
   msg->mutable_data()->Reserve(mat.rows());
   for (int ii = 0; ii < mat.rows(); ii++) {
@@ -45,4 +51,6 @@ WriteVector(const Eigen::VectorXd& mat, VectorMsg* msg)
   }
 }
 
+} // namspace dense
+} // namespace proxqp
 } // namespace proxsuite

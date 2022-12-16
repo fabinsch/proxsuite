@@ -123,7 +123,7 @@ struct Model
   void serialize()
   {
     MatrixMsg* H_msg;
-    proxsuite::WriteMatrix(H, H_msg);
+    proxsuite::proxqp::dense::WriteMatrix<T>(H, H_msg);
   }
 };
 } // namespace dense
