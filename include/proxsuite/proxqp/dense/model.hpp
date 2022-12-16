@@ -9,7 +9,7 @@
 #include "proxsuite/linalg/veg/type_traits/core.hpp"
 #include "proxsuite/proxqp/dense/fwd.hpp"
 #include "proxsuite/proxqp/sparse/model.hpp"
-#include "proxsuite/serialize.hpp"
+#include "proxsuite/helpers/serialize.hpp"
 
 namespace proxsuite {
 namespace proxqp {
@@ -118,6 +118,12 @@ struct Model
     }
     return true;
 #undef PROXSUITE_CHECK_SIZE
+  }
+
+  void serialize()
+  {
+    MatrixMsg* H_msg;
+    proxsuite::WriteMatrix(H, H_msg);
   }
 };
 } // namespace dense
