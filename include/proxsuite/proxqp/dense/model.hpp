@@ -125,6 +125,26 @@ struct Model
     MatrixMsg H_msg;
     H_msg.set_rows(H.rows());
     proxsuite::proxqp::dense::WriteMatrix<T>(H, &H_msg);
+
+    MatrixMsg A_msg;
+    A_msg.set_rows(A.rows());
+    proxsuite::proxqp::dense::WriteMatrix<T>(A, &A_msg);
+
+    MatrixMsg C_msg;
+    C_msg.set_rows(A.rows());
+    proxsuite::proxqp::dense::WriteMatrix<T>(C, &C_msg);
+
+    VectorMsg g_msg;
+    proxsuite::proxqp::dense::WriteVector<T>(g, &g_msg);
+
+    VectorMsg b_msg;
+    proxsuite::proxqp::dense::WriteVector<T>(b, &b_msg);
+
+    VectorMsg u_msg;
+    proxsuite::proxqp::dense::WriteVector<T>(u, &u_msg);
+
+    VectorMsg l_msg;
+    proxsuite::proxqp::dense::WriteVector<T>(l, &l_msg);
   }
 };
 } // namespace dense
