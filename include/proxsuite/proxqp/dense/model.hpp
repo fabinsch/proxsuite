@@ -123,15 +123,12 @@ struct Model
   void serialize()
   {
     MatrixMsg H_msg;
-    H_msg.set_rows(H.rows());
     proxsuite::proxqp::dense::WriteMatrix<T>(H, &H_msg);
 
     MatrixMsg A_msg;
-    A_msg.set_rows(A.rows());
     proxsuite::proxqp::dense::WriteMatrix<T>(A, &A_msg);
 
     MatrixMsg C_msg;
-    C_msg.set_rows(A.rows());
     proxsuite::proxqp::dense::WriteMatrix<T>(C, &C_msg);
 
     VectorMsg g_msg;
