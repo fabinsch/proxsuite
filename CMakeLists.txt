@@ -106,6 +106,18 @@ endif()
 # Build the main library
 file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS ${PROJECT_SOURCE_DIR}/include/*.hpp)
 
+# Protobuf
+find_package(Protobuf REQUIRED)
+include_directories(${PROTOBUF_INCLUDE_DIR})
+
+# to find *.bp.h files
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+protobuf_generate_cpp(PROTO_SRC PROTO_HEADER serial.proto)
+add_library(proto ${PROTO_HEADER} ${PROTO_SRC})
+
+# target_link_libraries(main proto ${PROTOBUF_LIBRARY})
+
 add_library(proxsuite INTERFACE)
 if(MSVC)
   target_compile_options(proxsuite INTERFACE /permissive-)
@@ -114,12 +126,12 @@ endif(MSVC)
 target_link_libraries(
   proxsuite
   PUBLIC
-  INTERFACE Eigen3::Eigen)
+  INTERFACE Eigen3::Eigen proto ${PROTOBUF_LIBRARY})
 target_include_directories(
   proxsuite INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
                       "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 set(EXPORTED_TARGETS_LIST proxsuite)
-
+list(APPEND EXPORTED_TARGETS_LIST proto)
 add_header_group(${PROJECT_NAME}_HEADERS)
 
 if(BUILD_WITH_VECTORIZATION_SUPPORT)

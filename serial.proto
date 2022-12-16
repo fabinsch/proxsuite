@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proxsuite;
+
+// source:
+// https://stackoverflow.com/questions/6774322/c-portable-array-serialization
+message MatrixMsg
+{
+  required uint32 rows = 1;
+  // columns deduced by division. Data stored as column major
+  repeated double data = 2 [ packed = true ];
+}
+
+message VectorMsg
+{
+  repeated double data = 1 [ packed = true ];
+}
