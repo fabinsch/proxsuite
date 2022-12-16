@@ -9,6 +9,7 @@
 #include "proxsuite/linalg/veg/type_traits/core.hpp"
 #include "proxsuite/proxqp/dense/fwd.hpp"
 #include "proxsuite/proxqp/sparse/model.hpp"
+#include "proxsuite/serialize.hpp"
 
 namespace proxsuite {
 namespace proxqp {
