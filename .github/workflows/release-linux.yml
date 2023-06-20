@@ -81,3 +81,16 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
+
+  check:
+    if: always()
+
+    needs:
+    - build-wheel
+
+    runs-on: Ubuntu-latest
+    steps:
+    - name: release-linux
+      uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}

@@ -32,3 +32,17 @@ jobs:
       # Run industrial_ci
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{ matrix.env }}
+
+
+  check:
+    if: always()
+
+    needs:
+    - CI
+
+    runs-on: Ubuntu-latest
+    steps:
+    - name: ci-linux-ros
+      uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}
