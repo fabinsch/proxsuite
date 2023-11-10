@@ -20,9 +20,6 @@ jobs:
         include:
           - arch: "aarch64"
             os: "ubuntu"
-            build: "cp37-manylinux*"
-          - arch: "aarch64"
-            os: "ubuntu"
             build: "cp38-manylinux*"
           - arch: "aarch64"
             os: "ubuntu"
@@ -43,7 +40,7 @@ jobs:
           submodules: 'true'
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - name: Set up QEMU
         if: matrix.arch == 'aarch64'
         uses: docker/setup-qemu-action@v2
