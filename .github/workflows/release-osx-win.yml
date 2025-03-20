@@ -12,10 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
-        os: [windows-2019, windows-latest]
+        os: [windows-latest]
         include:
-          - os: windows-2019
-            toolset: ClangCl
           - os: windows-latest
             toolset: v143
 
@@ -104,6 +102,11 @@ jobs:
             echo "Verifying $wheel..."
             unzip -t "$wheel"
           done
+
+      - name: Check package with twine
+        run: |
+          pip install twine
+          twine check --strict dist/*
 
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
